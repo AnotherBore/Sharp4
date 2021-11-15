@@ -17,7 +17,7 @@ namespace L4_L4
         }
         public virtual String GetInfo()
         {
-            return ($"Температура воздуха: {temperature}.");
+            return ($"Температура воздуха: {temperature}°.");
         }
         public static Random rndm = new Random();
     }
@@ -26,11 +26,12 @@ namespace L4_L4
     {
         public int distance = 0;
         bool windy = false;
-        public static Sunny GenerateRandomly()
+        public static Sunny Random()
         {
             return new Sunny
             {
-                temperature = rndm.Next(-40, 40), 
+                temperature = rndm.Next(-40, 40),
+                distance = rndm.Next(5, 30),
                 windy = rndm.Next(2) == 0 
             };
         }
@@ -40,7 +41,7 @@ namespace L4_L4
         }
         public override String GetInfo()
         {
-            return $"Температура воздуха: {temperature} C. Солнечно. Высота солнца над горизонтом:{distance} м." + (windy ? "Ветренно." : "Безветренно.");
+            return $"Температура воздуха: {temperature}°. Солнечно. Высота солнца над горизонтом: {distance}°. " + (windy ? "Ветренно." : "Безветренно.");
         }
     }
     public class Rainy : Weather
@@ -48,11 +49,11 @@ namespace L4_L4
         public int value = 0;
         bool rainbow = false;
         bool storm = false;
-        public static Rainy GenerateRandomly()
+        public static Rainy Random()
         {
             return new Rainy
             {
-                value = rndm.Next(1, 250),
+                value = rndm.Next(1, 100),
                 rainbow = rndm.Next(2) == 0,
                 storm = rndm.Next(2) == 0
             };
@@ -63,7 +64,7 @@ namespace L4_L4
         }
         public override String GetInfo()
         {
-            return $"Температура воздуха: {temperature} C.Дождь. Количество осадков {value} мм. " + (rainbow ? "Радуга. " : "Без радуги. ") + (storm ? "Гроза." : "Без грозы.");
+            return $"Температура воздуха: {temperature}°. Дождь. Количество осадков {value} мм. " + (rainbow ? "Радуга. " : "Без радуги. ") + (storm ? "Гроза." : "Без грозы.");
         }
     }
     public enum SnowType {flakes, fine, snowfall}
@@ -71,11 +72,11 @@ namespace L4_L4
     {
         public float height = 0;
         SnowType type = SnowType.fine;
-        public static Snowy GenerateRandomly()
+        public static Snowy Random()
         {
             return new Snowy
             {
-                height = rndm.Next(1, 20) / 10,
+                height = (float)rndm.Next(1, 20) / 10,
                 type = (SnowType) rndm.Next(3),
             };
         }
@@ -104,7 +105,7 @@ namespace L4_L4
         }
         public override String GetInfo()
         {
-            return $"Температура воздуха: {temperature} C. {GetSnow()}. Высота сугробов {height} м. ";
+            return $"Температура воздуха: {temperature}°. {GetSnow()}. Высота сугробов {height} м. ";
         }
     }
 }
