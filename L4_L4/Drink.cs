@@ -1,4 +1,5 @@
-﻿using System;
+﻿using L4_L4.Properties;
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,35 +8,103 @@ using System.Threading.Tasks;
 
 namespace L4_L4
 {
-    public enum JuiceType { apple, orange, pineapple };
-    public enum SodaType { coke, pepsi, fanta }
-    public enum AlcoholType { whiskey, wine, beer };
-    public class Drink
+    public class Weather
     {
-        private int volume;
-        public virtual Image GetPicture()
+        protected int temperature = 0;
+        public virtual Image GetImage()
         {
             return null;
         }
         public virtual String GetInfo()
         {
-            return ($"Напиток. Объем - {volume}.");
+            return ($"Температура воздуха: {temperature}.");
         }
         public static Random rndm = new Random();
     }
-    public class Juice : Drink
+
+    public class Sunny : Weather
     {
-        JuiceType type = JuiceType.apple;
-        bool withPulp = false;
+        public int distance = 0;
+        bool windy = false;
+        public static Sunny GenerateRandomly()
+        {
+            return new Sunny
+            {
+                temperature = rndm.Next(-40, 40), 
+                windy = rndm.Next(2) == 0 
+            };
+        }
+        public override Image GetImage()
+        {
+            return new Bitmap(Resources.sun);
+        }
+        public override String GetInfo()
+        {
+            return $"Температура воздуха: {temperature} C. Солнечно. Высота солнца над горизонтом:{distance} м." + (windy ? "Ветренно." : "Безветренно.");
+        }
     }
-    class Soda : Drink
+    public class Rainy : Weather
     {
-        SodaType type = SodaType.coke;
-        int countOfBubbles = 0;
+        public int value = 0;
+        bool rainbow = false;
+        bool storm = false;
+        public static Rainy GenerateRandomly()
+        {
+            return new Rainy
+            {
+                value = rndm.Next(1, 250),
+                rainbow = rndm.Next(2) == 0,
+                storm = rndm.Next(2) == 0
+            };
+        }
+        public override Image GetImage()
+        {
+            return new Bitmap(Resources.rain);
+        }
+        public override String GetInfo()
+        {
+            return $"Температура воздуха: {temperature} C.Дождь. Количество осадков {value} мм. " + (rainbow ? "Радуга. " : "Без радуги. ") + (storm ? "Гроза." : "Без грозы.");
+        }
     }
-    class Alcohol : Drink
+    public enum SnowType {flakes, fine, snowfall}
+    public class Snowy : Weather
     {
-        AlcoholType type = AlcoholType.wine;
-        int strength = 0;
+        public float height = 0;
+        SnowType type = SnowType.fine;
+        public static Snowy GenerateRandomly()
+        {
+            return new Snowy
+            {
+                height = rndm.Next(1, 20) / 10,
+                type = (SnowType) rndm.Next(3),
+            };
+        }
+        public override Image GetImage()
+        {
+            return new Bitmap(Resources.snow);
+        }
+        private String GetSnow()
+        {
+            switch (type)
+            {
+                case SnowType.fine:
+                {
+                    return "Легкий снег";
+                }
+                case SnowType.snowfall:
+                    {
+                        return "Снегопад";
+                    }
+                case SnowType.flakes:
+                {
+                        return "Снег хлопьями";
+                }
+                default: return null;
+            }
+        }
+        public override String GetInfo()
+        {
+            return $"Температура воздуха: {temperature} C. {GetSnow()}. Высота сугробов {height} м. ";
+        }
     }
 }
