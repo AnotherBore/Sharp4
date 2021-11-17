@@ -24,7 +24,7 @@ namespace L4_L4
 
     public class Sunny : Weather
     {
-        public int distance = 0;
+        int distance = 0;
         bool windy = false;
         public static Sunny Random()
         {
@@ -46,7 +46,7 @@ namespace L4_L4
     }
     public class Rainy : Weather
     {
-        public int value = 0;
+        int value = 0;
         bool rainbow = false;
         bool storm = false;
         public static Rainy Random()
@@ -70,7 +70,7 @@ namespace L4_L4
     public enum SnowType {flakes, fine, snowfall}
     public class Snowy : Weather
     {
-        public float height = 0;
+        float height = 0;
         SnowType type = SnowType.fine;
         public static Snowy Random()
         {
